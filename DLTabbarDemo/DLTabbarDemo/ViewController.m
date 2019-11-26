@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-
+#import <Masonry.h>
 @interface ViewController ()
 
 @end
@@ -17,6 +17,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+//    self.view.backgroundColor = [UIColor blueColor];
+    UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:scroll];
+    UIImageView *image = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"四代"]];
+    [scroll addSubview:image];
+    [image mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.offset(0);
+        make.width.offset(600);
+        make.height.offset(700);
+    }];
 }
 
 

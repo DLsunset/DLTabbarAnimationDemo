@@ -22,12 +22,14 @@
     _needSetBiggerItem = YES;
 }
 
-- (void)layoutSubviews
-{
+//这个是自定义UITabBar的layoutSubviews方法
+- (void)layoutSubviews {
     [super layoutSubviews];
     
+    //添加lottie的操作，只可以做一次
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        //三个lottieView
         DLLottieView *view = [DLLottieView animationWithSelectName:@"arrow_select" unselectName:@"arrow_unselect"];
         DLLottieView *view1 = [DLLottieView animationWithSelectName:@"second_select" unselectName:@"second_unselect"];
         DLLottieView *view2 = [DLLottieView animationWithSelectName:@"arrow_select" unselectName:@"arrow_unselect"];
@@ -35,16 +37,23 @@
         self.itemArr = @[view,view1,view2];
 
         NSInteger flag = 0;
+        //遍历UITabbar的子控件
         for (UIView *barBtn in self.subviews) {
+            //其中有一个子控件是UITabBarButton类型。
             if ([barBtn isKindOfClass:NSClassFromString(@"UITabBarButton")]) {
                 UIImageView *tabBarSwappableImageView = [[UIImageView alloc] init];;
+                
+                //在UITabBarButton的子控件中有一个UITabBarSwappableImageView类型，这就是tabBarItem用来展示图片的imageView
                 for (UIView *subView in barBtn.subviews) {
                     if ([subView isKindOfClass:NSClassFromString(@"UITabBarSwappableImageView")]) {
                         tabBarSwappableImageView = (UIImageView *)subView;
                     }
                 }
+                
+                //拿到这个imageView,给它添加lottie
                 [tabBarSwappableImageView addSubview:self->_itemArr[flag]];
-
+                
+                //设置lottie的位置大小
                 CGFloat width = self->_needSetBiggerItem && flag == self->_biggerItemIndex ? 52 : 32;
                 CGFloat y = self->_needSetBiggerItem && flag == self->_biggerItemIndex ? 10 : 0;
 
